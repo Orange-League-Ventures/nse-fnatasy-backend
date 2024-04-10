@@ -1,0 +1,36 @@
+{
+  "name": "nse-fantasy",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start:prod": "set NODE_ENV=production&& nodemon index.js",
+    "start": "set NODE_ENV=development&& nodemon index.js",
+    "dev": "set NODE_ENV=development&& nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://git.turnkey.work/nse-fantasy/nse-fantasy-backend.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "express-session": "^1.18.0",
+    "oracledb": "^6.4.0",
+    "sequelize": "^6.37.2",
+    "sequelize-cli": "^6.6.2",
+    "sequelize-oracle": "^3.3.2-0.0",
+    "sequelize-pool": "^8.0.0",
+    "swagger": "^0.7.5",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  }
+}
