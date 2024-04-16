@@ -27,4 +27,26 @@ db.sequelize = sequelize;
 
 db.user = require("./user/user.model")(sequelize, Sequelize);
 
+db.question=require("./Quiz/question.model")(sequelize,Sequelize);
+db.option=require("./Quiz/options.model")(sequelize,Sequelize);
+db.explaination=require("./Quiz/explaination.model")(sequelize,Sequelize);
+
+//Mapping Option Table with Question Table
+db.option.belongsTo(db.question,{
+  foreignKey: "question_id",
+})
+db.question.hasMany(db.option,{
+  foreignKey: "question_id",
+  as:"option"
+})
+
+//Mapping explaination Table with Option Table
+db.explaination.belongsTo(db.option,{
+  foreignKey: "option_id",
+})
+db.option.hasOne(db.explaination,{
+  foreignKey: "option_id",
+  as:"explaination"
+})
+
 module.exports = db;
