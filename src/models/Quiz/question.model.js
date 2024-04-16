@@ -1,5 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
-  const User = sequelize.define(
+  const Question = sequelize.define(
     "question",
     {
       id: {
@@ -11,7 +11,7 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.TEXT,
         allowNull: false,
       },
-      situation: {
+      sitituation: {
         type: Sequelize.TEXT,
         allowNull: false,
       },
@@ -25,5 +25,5 @@ module.exports = (sequelize, Sequelize) => {
     }
   );
 
-  return User;
+  return Question;
 };

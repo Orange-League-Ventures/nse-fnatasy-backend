@@ -1,5 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
-  const User = sequelize.define(
+  const Option = sequelize.define(
     "option",
     {
       id: {
@@ -14,6 +14,7 @@ module.exports = (sequelize, Sequelize) => {
       is_correct: {
         type: Sequelize.BOOLEAN,
         allowNull: false,
+        defaultValue: false,
       },
     },
     {
@@ -21,5 +22,5 @@ module.exports = (sequelize, Sequelize) => {
     }
   );
 
-  return User;
+  return Option;
 };
