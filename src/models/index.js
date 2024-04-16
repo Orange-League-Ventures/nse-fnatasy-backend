@@ -6,6 +6,8 @@ require("dotenv").config();
 const selectedDbConfig =
   process.env.NODE_ENV === "production" ? dbConfig.prod_db : dbConfig.dev_db;
 
+
+  console.log({selectedDbConfig});
 const sequelize = new Sequelize(
   selectedDbConfig.DB,
   selectedDbConfig.USER,
@@ -26,5 +28,15 @@ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
 db.User = require("./user/user.model")(sequelize, Sequelize);
+db.Topic = require("./learn/topic.model")(sequelize, Sequelize);
+db.Content = require("./learn/content.model")(sequelize, Sequelize);
+
+db.Content.belongsTo(db.Topic,{
+  foreignKey: "topic_id",
+})
+db.Topic.hasMany(db.Content,{
+  foreignKey: "topic_id",
+  as:"content"
+})
 
 module.exports = db;
