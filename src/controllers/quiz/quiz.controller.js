@@ -23,7 +23,7 @@ quizController.create = async (req, res) => {
           const {
             quiz_type,
             situation,
-            question,
+            question_text,
             option1,
             option2,
             option3,
@@ -41,7 +41,7 @@ quizController.create = async (req, res) => {
 
           try {
             // Create or find the quiz associated with the quiz_type
-            let [quizInfo] = await db.quiz.findOrCreate({
+            let [quizInfo] = await quiz.findOrCreate({
               where: { quizType: quiz_type },
               transaction,
             });
@@ -50,7 +50,7 @@ quizController.create = async (req, res) => {
             const newQuestion = await question.create(
               {
                 quiz_id: quizInfo.id,
-                question_text: question,
+                question_text: question_text,
                 situation,
                 image_url: question_image,
               },
