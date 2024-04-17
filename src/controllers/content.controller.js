@@ -3,16 +3,17 @@ const { Topic, Content } = require('../models');
 
 const createContent = async (req, res) => {
     try {
-        const { content_value, topic_id } = req.body;
+        const { content_value, topic_id, content_image = "" } = req.body;
         if (!content_value || !topic_id.trim() || !topic_id || !content_value.trim()) {
             return res.status(404).json({ success: false, message: 'Invalid Request' });
         }
 
-        console.log({ content_value, topic_id });
+        console.log({ content_value, topic_id, content_image });
 
         const newTopic = await Content.create({
             content_value,
             topic_id,
+            content_image
         });
 
         console.log({ newTopic });
@@ -29,7 +30,7 @@ const ContentByTopicID = async (req, res) => {
         const { page, topicId, limit } = req.query;
         console.log({ page, topicId });
         const offset = (page - 1) * limit;
-        const content = await Content.findAll({
+        const content = await Content.findAndCountAll({
             where: {
                 topic_id: topicId,
             },
