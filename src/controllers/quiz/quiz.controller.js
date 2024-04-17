@@ -7,13 +7,13 @@ const fs = require("fs");
 const quizController = {};
 
 quizController.create = async (req, res) => {
+  const responseData = {
+    msg: "Error in Adding Quizes ",
+    success: false,
+    result: "Empty",
+  };
   try {
-    const responseData = {
-      msg: "Error in Adding Quizes ",
-      success: false,
-      result: "Empty",
-    };
-
+    console.log(req.file,'rwqeiafebjda');
     const filePath = req.file.path;
 
     fs.createReadStream(filePath)
