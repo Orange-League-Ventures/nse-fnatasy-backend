@@ -2,8 +2,9 @@ const bcrypt = require("bcrypt");
 const { User } = require("../models");
 const jwt = require("jsonwebtoken");
 const { Sequelize, Op } = require("sequelize");
+ const { isValidEmail, isValidPhoneNumber, validatePassword } =require("../utils/validationUtils"); 
 
-const signUp = async (req, res) => {
+const signupUser = async (req, res) => {
   try {
     // Extract data from request body
     const { name, email, password, phone_number, profile_picture } = req.body;
@@ -39,37 +40,11 @@ const signUp = async (req, res) => {
         .json({ success: false, message: "Invalid phone number format" });
     }
 
-    // Check if password meets criteria
-    if (password.length < 6) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Password must be at least 6 characters long" });
+    // Validate password
+    const passwordValidationMessage = validatePassword(password);
+    if (passwordValidationMessage) {
+      return res.status(400).json({ success: false, message: passwordValidationMessage });
     }
-
-    if (!/\d/.test(password)) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Password must contain at least one digit" });
-    }
-
-    if (!/[a-z]/.test(password)) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Password must contain at least one lowercase letter" });
-    }
-
-    if (!/[A-Z]/.test(password)) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Password must contain at least one uppercase letter" });
-    }
-
-    if (!/[^a-zA-Z0-9]/.test(password)) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Password must contain at least one special character" });
-    }
-
     // Check if email or phone number already exists in the database
     const existingUser = await User.findOne({
       where: {
@@ -84,7 +59,7 @@ const signUp = async (req, res) => {
     }
 
     // Hash the password
-    const hashedPassword = await bcrypt.hash(password, 10); 
+    const hashedPassword = await bcrypt.hash(password, 10);
 
     // Create new user in the database
     const newUser = await User.create({
@@ -103,25 +78,13 @@ const signUp = async (req, res) => {
     });
   } catch (error) {
     console.error("Error creating user:", error);
-    res.status(500).json({ success: false, message: "Internal server error", error});
+    res
+      .status(500)
+      .json({ success: false, message: "Internal server error", error });
   }
 };
 
-// Function to validate email format
-const isValidEmail = (email) => {
-  // Use a regular expression to validate email format
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(email);
-};
-
-// Function to validate phone number format
-const isValidPhoneNumber = (phone_number) => {
-  // Use a regular expression to validate phone number format
-  const phoneRegex = /^[0-9]{10,}$/;
-  return phoneRegex.test(phone_number);
-};
-
-const login = async (req, res) => {
+const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
 
@@ -160,7 +123,7 @@ const login = async (req, res) => {
     );
     res.status(200).json({
       success: true,
-      accessToken, 
+      accessToken,
       user: {
         name: user.dataValues.name,
         email: user.dataValues.email,
@@ -176,4 +139,83 @@ const login = async (req, res) => {
   }
 };
 
-module.exports = { signUp, login };
+const updateUser = async (req, res) => {
+  try {
+      const { name, email, password, phone_number, profile_picture } = req.body;
+      const userId = req.id;
+
+      const user = await User.findByPk(userId);
+
+      if (!user) {
+          return res.status(404).json({ success: false, message: "User not found" });
+      }
+
+      // Check if email or phone number is being updated
+    if (email && email !== user.email) {
+      // If email is being updated, check if it already exists for another user
+      const existingEmailUser = await User.findOne({ where: { email } });
+      if (existingEmailUser && existingEmailUser.id !== userId) {
+        return res.status(400).json({ success: false, message: "Email already exists for another user" });
+      }
+    }
+
+    if (phone_number && phone_number !== user.phone_number) {
+      // If phone number is being updated, check if it already exists for another user
+      const existingPhoneUser = await User.findOne({ where: { phone_number } });
+      if (existingPhoneUser && existingPhoneUser.id !== userId) {
+        return res.status(400).json({ success: false, message: "Phone number already exists for another user" });
+      }
+    }
+
+
+      // Update user information
+      if (name) user.name = name;
+      if (email) user.email = email;
+      if (phone_number) user.phone_number = phone_number;
+      if (profile_picture) user.profile_picture = profile_picture;
+
+      if (!isValidEmail(email)) {
+        return res
+          .status(400)
+          .json({ success: false, message: "Invalid email format" });
+      }
+  
+      // Check if phone number is valid
+      if (!isValidPhoneNumber(phone_number)) {
+        return res
+          .status(400)
+          .json({ success: false, message: "Invalid phone number format" });
+      }
+
+      // Update password if provided
+      if (password) {
+          // Validate password
+          const passwordValidationMessage = validatePassword(password);
+          if (passwordValidationMessage) {
+              return res.status(400).json({ success: false, message: passwordValidationMessage });
+          }
+
+          // Hash the new password
+          const hashedPassword = await bcrypt.hash(password, 10);
+          user.password = hashedPassword;
+      }
+
+      await user.save();
+
+      res.status(200).json({
+          success: true,
+          message: "User information updated successfully",
+          user: {
+              name: user.name,
+              email: user.email,
+              phone_number: user.phone_number,
+              profile_picture: user.profile_picture
+          }
+      });
+  } catch (error) {
+      console.error("Error updating user information:", error);
+      res.status(500).json({ success: false, message: "Internal server error", error : error.message });
+  }
+};
+ 
+module.exports = { signupUser, loginUser , updateUser };
