@@ -19,7 +19,7 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.STRING,
         allowNull: false,
         validate: {
-          isIn: [['bar', 'line', 'pie']], // Allowed chart types
+          isIn: [['candelstick', 'line']], // Allowed chart types
         },
       },
     },
