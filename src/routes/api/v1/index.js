@@ -7,4 +7,7 @@ router.use('/user' , userRoutes );
 const  topicRoutes  = require('./topic.routes');
 router.use('/topic' , topicRoutes );
 
+const  contentRoutes  = require('./content.routes');
+router.use('/content' , contentRoutes );
+
 module.exports = router;

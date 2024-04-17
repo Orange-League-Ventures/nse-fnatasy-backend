@@ -18,7 +18,7 @@ const createTopic = async (req, res) => {
 
         console.log({ newTopic });
 
-        res.status(201).json({ success: true, message: 'Topic created successfully', user: newTopic });
+        res.status(201).json({ success: true, message: 'Topic created successfully', topic: newTopic });
 
     } catch (error) {
         res.status(500).json({ success: false, message: 'Internal server error', error });
@@ -30,15 +30,15 @@ const topicByChartType = async (req, res) => {
         const { page, chartType, limit } = req.query;
         console.log({ page, chartType });
         const offset = (page - 1) * limit;
-        const topic = await Topic.findAndCountAll({
+        const topics = await Topic.findAll({
             where: {
                 chart_type: chartType,
             },
-            offset: offset,
-            limit: limit,
+            // offset: offset,
+            // limit: limit,
         });
 
-        res.status(201).json({ success: true, message: 'Topic fetched successfully', topic });
+        res.status(201).json({ success: true, message: 'Topic fetched successfully', topics });
 
     }
     catch (error) {
