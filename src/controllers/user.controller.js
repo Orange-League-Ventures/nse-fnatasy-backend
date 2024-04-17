@@ -103,7 +103,7 @@ const signUp = async (req, res) => {
     });
   } catch (error) {
     console.error("Error creating user:", error);
-    res.status(500).json({ success: false, message: "Internal server error" });
+    res.status(500).json({ success: false, message: "Internal server error", error});
   }
 };
 
@@ -153,19 +153,19 @@ const login = async (req, res) => {
     }
 
     // Generate JWT token
-    const token = jwt.sign(
+    const accessToken = jwt.sign(
       { id: user.id, email: user.email },
       process.env.JWT_SECRET,
       { expiresIn: "3d" }
     );
     res.status(200).json({
       success: true,
+      accessToken, 
       user: {
         name: user.dataValues.name,
         email: user.dataValues.email,
         phone_number: user.dataValues.phone_number,
         profile_picture: user.dataValues.profile_picture,
-        token,
       },
     });
   } catch (error) {
