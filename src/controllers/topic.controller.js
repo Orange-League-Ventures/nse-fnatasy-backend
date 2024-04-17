@@ -7,17 +7,13 @@ const createTopic = async (req, res) => {
         if (!topic_name || !topic_name.trim() || !chart_type || !chart_type.trim()) {
             return res.status(404).json({ success: false, message: 'Invalid Request' });
         }
-
         console.log({ topic_name, chart_type });
-
         const newTopic = await Topic.create({
             topic_name,
             chart_type,
             icon
         });
-
         console.log({ newTopic });
-
         res.status(201).json({ success: true, message: 'Topic created successfully', topic: newTopic });
 
     } catch (error) {
@@ -34,8 +30,6 @@ const topicByChartType = async (req, res) => {
             where: {
                 chart_type: chartType,
             },
-            // offset: offset,
-            // limit: limit,
         });
 
         res.status(201).json({ success: true, message: 'Topic fetched successfully', topics });
