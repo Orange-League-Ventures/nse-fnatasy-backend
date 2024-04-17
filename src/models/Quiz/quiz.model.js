@@ -9,7 +9,7 @@ module.exports = (sequelize, Sequelize) => {
       },
       quizType: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: true,
       },
     },
     {

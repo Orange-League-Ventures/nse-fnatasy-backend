@@ -9,11 +9,11 @@ module.exports = (sequelize, Sequelize) => {
       },
       question_text: {
         type: Sequelize.TEXT,
-        allowNull: false,
+        allowNull: true,
       },
       sitituation: {
         type: Sequelize.TEXT,
-        allowNull: false,
+        allowNull: true,
       },
       image_url: {
         type: Sequelize.STRING,

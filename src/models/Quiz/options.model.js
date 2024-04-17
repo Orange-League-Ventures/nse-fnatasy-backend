@@ -9,11 +9,11 @@ module.exports = (sequelize, Sequelize) => {
       },
       option_text: {
         type: Sequelize.TEXT,
-        allowNull: false,
+        allowNull: true,
       },
       is_correct: {
         type: Sequelize.BOOLEAN,
-        allowNull: false,
+        allowNull: true,
         defaultValue: false,
       },
     },
