@@ -70,10 +70,18 @@ const signupUser = async (req, res) => {
       profile_picture,
     });
 
+    // Generate JWT token
+    const accessToken = jwt.sign(
+      { id: newUser.id },
+      process.env.JWT_SECRET,
+      { expiresIn: "3d" }
+    );
+
     // Respond with success message
     res.status(201).json({
       success: true,
-      message: "User created successfully",
+      message: `${newUser.dataValues.name} created successfully!`,
+      accessToken,
       user: newUser,
     });
   } catch (error) {
@@ -117,12 +125,13 @@ const loginUser = async (req, res) => {
 
     // Generate JWT token
     const accessToken = jwt.sign(
-      { id: user.id, email: user.email },
+      { id: user.id},
       process.env.JWT_SECRET,
       { expiresIn: "3d" }
     );
     res.status(200).json({
       success: true,
+      message : `${user.dataValues.name} logged in successfully!`,
       accessToken,
       user: {
         name: user.dataValues.name,
@@ -209,7 +218,9 @@ const updateUser = async (req, res) => {
               name: user.name,
               email: user.email,
               phone_number: user.phone_number,
-              profile_picture: user.profile_picture
+              profile_picture: user.profile_picture,
+              createdAt : user.createdAt,
+              updatedAt : user.updatedAt
           }
       });
   } catch (error) {
