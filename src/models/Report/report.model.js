@@ -10,6 +10,10 @@ module.exports = (sequelize, Sequelize) => {
       result: {
         type: Sequelize.STRING,
       },
+      no_of_attempted: {
+        type: Sequelize.INTEGER,
+        defaultValue: 0,
+      },
     },
     {
       timestamps: true,

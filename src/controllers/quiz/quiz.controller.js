@@ -3,6 +3,7 @@ const { quiz, question, option, explaination } = db;
 const csv = require("csv-parser");
 const fs = require("fs");
 const formidable = require("formidable");
+
 const quizController = {};
 
 quizController.create = async (req, res) => {
@@ -20,7 +21,6 @@ quizController.create = async (req, res) => {
       fs.createReadStream(oldPath)
         .pipe(csv())
         .on("data", async (row) => {
-          console.log("Row-->", row);
           try {
             const {
               quiz_type,
@@ -102,8 +102,6 @@ quizController.create = async (req, res) => {
           res.json(responseData);
         });
     });
-
-    // const filePath = req.file.path;
   } catch (error) {
     console.error("Error:", error);
     res.status(500).json(responseData);
