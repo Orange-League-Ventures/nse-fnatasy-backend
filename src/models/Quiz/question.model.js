@@ -19,7 +19,7 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.STRING,
         allowNull: true,
       },
-      set: {
+      set_id: {
         type: Sequelize.INTEGER,
         defaultValue: 0,
       },
