@@ -95,4 +95,26 @@ const searchWords = async (req, res) => {
     }
 }
 
-module.exports = { createWord, fetcWords, searchWords, fetcDefinitionID };
+const WordOfTheDay = async (req, res) => {
+    try {
+        const count = await Dictionary.count();
+
+        const randomIndex = Math.floor(Math.random() * count);
+
+        const entry = await Dictionary.findOne({
+            offset: randomIndex
+        });
+
+        if (entry) {
+            res.status(200).json({ success: true, message: 'Word of the day fetched successfully', wordOfTheDay: entry.word });
+        } else {
+            res.status(404).json({ success: false, message: 'No words found in the dictionary' });
+        }
+    } catch (error) {
+        console.error('Error fetching word of the day:', error);
+        res.status(500).json({ success: false, message: 'Internal Server Error', error });
+    }
+}
+
+
+module.exports = { createWord, fetcWords, searchWords, fetcDefinitionID, WordOfTheDay };

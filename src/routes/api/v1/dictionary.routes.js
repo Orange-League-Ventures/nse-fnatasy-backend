@@ -6,5 +6,6 @@ router.post('/', dictionaryController.createWord)
 router.get('/', dictionaryController.fetcWords)
 router.get('/word-defition', dictionaryController.fetcDefinitionID)
 router.get('/search', dictionaryController.searchWords)
+router.get('/word-of-the-day', dictionaryController.WordOfTheDay)
 
 module.exports = router;
