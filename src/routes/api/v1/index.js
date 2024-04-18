@@ -10,4 +10,9 @@ router.use('/topic' , topicRoutes );
 const  contentRoutes  = require('./content.routes');
 router.use('/content' , contentRoutes );
 
+
+
+const  dictionaryRoutes  = require('./dictionary.routes');
+router.use('/dictionary' , dictionaryRoutes );
+
 module.exports = router;
