@@ -6,7 +6,6 @@ const { Dictionary, sequelize } = require('../models');
 const createWord = async (req, res) => {
     try {
         const { word, definition } = req.body;
-        console.log({ word, definition });
         const [entry, created] = await Dictionary.findOrCreate({
             where: { word: word.toLowerCase() },
             defaults: { definition: definition }
@@ -27,23 +26,21 @@ const fetcWords = async (req, res) => {
         const result = []
         const entries = await Dictionary.findAll({
             attributes: [
+                'id', // Include the ID attribute
                 'word',
-                [sequelize.fn('SUBSTR', sequelize.col('word'), 1, 1), 'first_letter'] // Extract the first letter of the word
+                [sequelize.fn('SUBSTR', sequelize.col('word'), 1, 1), 'first_letter'], // Extract the first letter of the word,
             ],
-            group: ['word'],
+            group: ['id', 'word'],
             order: [['word', 'ASC']] // Order by word in ascending order
         });
-        console.log({ entries });
         entries.forEach((entry) => {
             const firstLetter = entry.getDataValue('first_letter');
-            console.log({ firstLetter });
             const word = entry.getDataValue('word');
-            console.log({ word });
+            const id = entry.getDataValue('id');
             if (!result[firstLetter]) {
-                console.log("41");
                 result[firstLetter] = [];
             }
-            result[firstLetter].push(word);
+            result[firstLetter].push({ id, word });
         });
         const resultArray = Object.entries(result).map(([letter, words]) => ({ letter, words }));
 
@@ -59,7 +56,6 @@ const fetcDefinitionID = async (req, res) => {
     const { id } = req.query; // Assuming the ID is passed as a URL parameter
     try {
         const entry = await Dictionary.findByPk(id);
-        console.log({ entry, df: entry.definition });
         if (entry) {
             res.status(200).json({ success: true, message: 'Definition fetched successfully', definition: entry.definition });
         } else {
@@ -106,7 +102,11 @@ const WordOfTheDay = async (req, res) => {
         });
 
         if (entry) {
-            res.status(200).json({ success: true, message: 'Word of the day fetched successfully', wordOfTheDay: entry.word });
+            res.status(200).json({
+                success: true, message: 'Word of the day fetched successfully', wordOfTheDay: {
+                    word: entry.word, definition: entry.definition
+                }
+            });
         } else {
             res.status(404).json({ success: false, message: 'No words found in the dictionary' });
         }
