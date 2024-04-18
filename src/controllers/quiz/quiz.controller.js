@@ -107,37 +107,21 @@ quizController.create = async (req, res) => {
     res.status(500).json(responseData);
   }
 };
-quizController.get=async(req,res)=>{
+quizController.get = async (req, res) => {
   const responseData = {
     msg: "Error in Adding Quizes ",
     success: false,
     result: "Empty",
   };
-  try{
-    const data=await quiz.findAll({
-      
-      // include:[
-      //   {
-      //     model:db.question,
-      //     as:'question',
-      //     include:{
-      //       model:db.option,
-      //       as:'option',
-      //       include:{
-      //         model:db.explaination,
-      //         as:'explaination'
-      //       }
-      //     }
-      //   }
-      // ],
-    })
-    console.log(data,'datajdfninf');
-    if(data){
+  try {
+    const data = await quiz.findAll({});
+    console.log(data, "datajdfninf");
+    if (data) {
       return res.status(200).json({ success: true, quiz: data });
     }
-  }catch(error){
+  } catch (error) {
     console.log(error);
   }
-}
+};
 
 module.exports = quizController;
