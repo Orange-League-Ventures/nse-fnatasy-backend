@@ -133,12 +133,7 @@ const loginUser = async (req, res) => {
       success: true,
       message : `${user.dataValues.name} logged in successfully!`,
       accessToken,
-      user: {
-        name: user.dataValues.name,
-        email: user.dataValues.email,
-        phone_number: user.dataValues.phone_number,
-        profile_picture: user.dataValues.profile_picture,
-      },
+      user,
     });
   } catch (error) {
     console.error("Error logging in:", error);
@@ -215,6 +210,7 @@ const updateUser = async (req, res) => {
           success: true,
           message: "User information updated successfully",
           user: {
+              id: user.id,
               name: user.name,
               email: user.email,
               phone_number: user.phone_number,
