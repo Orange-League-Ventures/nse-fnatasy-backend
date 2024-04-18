@@ -103,8 +103,8 @@ const wordOfTheDay = async (req, res) => {
             return;
         }
 
-        res.status(500).json({
-            success: false, message: 'Internal Server Error', wordOfTheDay: {
+        res.status(200).json({
+            success: true, message: 'Success', wordOfTheDay: {
                 word: wordOfTheDay.word,
                 definition: wordOfTheDay.definition
             }
