@@ -39,7 +39,7 @@ db.question.belongsTo(db.quiz, {
 });
 db.quiz.hasMany(db.question, {
   foreignKey: "quiz_id",
-  as: "quiz",
+  as: "question",
 });
 
 //Mapping Option Table with Question Table

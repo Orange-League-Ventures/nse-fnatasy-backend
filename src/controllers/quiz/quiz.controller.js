@@ -3,7 +3,6 @@ const { quiz, question, option, explaination } = db;
 const csv = require("csv-parser");
 const fs = require("fs");
 const formidable = require("formidable");
-const { log } = require("console");
 const quizController = {};
 
 quizController.create = async (req, res) => {
@@ -110,5 +109,37 @@ quizController.create = async (req, res) => {
     res.status(500).json(responseData);
   }
 };
+quizController.get=async(req,res)=>{
+  const responseData = {
+    msg: "Error in Adding Quizes ",
+    success: false,
+    result: "Empty",
+  };
+  try{
+    const data=await quiz.findAll({
+      
+      // include:[
+      //   {
+      //     model:db.question,
+      //     as:'question',
+      //     include:{
+      //       model:db.option,
+      //       as:'option',
+      //       include:{
+      //         model:db.explaination,
+      //         as:'explaination'
+      //       }
+      //     }
+      //   }
+      // ],
+    })
+    console.log(data,'datajdfninf');
+    if(data){
+      return res.status(200).json({ success: true, quiz: data });
+    }
+  }catch(error){
+    console.log(error);
+  }
+}
 
 module.exports = quizController;
