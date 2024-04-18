@@ -14,6 +14,10 @@ module.exports = (sequelize, Sequelize) => {
         definition: {
           type: Sequelize.TEXT,
           allowNull: true
+        },
+        wordOfTheDay:{
+          type: Sequelize.BOOLEAN,
+          allowNull: true
         }
       },
       {

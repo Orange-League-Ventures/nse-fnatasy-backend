@@ -91,30 +91,60 @@ const searchWords = async (req, res) => {
     }
 }
 
-const WordOfTheDay = async (req, res) => {
+const wordOfTheDay = async (req, res) => {
     try {
-        const count = await Dictionary.count();
-
-        const randomIndex = Math.floor(Math.random() * count);
-
-        const entry = await Dictionary.findOne({
-            offset: randomIndex
+        // Find the word where wordOfTheDay is true
+        const wordOfTheDay = await Dictionary.findOne({
+            where: { wordOfTheDay: true }
         });
 
-        if (entry) {
-            res.status(200).json({
-                success: true, message: 'Word of the day fetched successfully', wordOfTheDay: {
-                    word: entry.word, definition: entry.definition
-                }
-            });
-        } else {
-            res.status(404).json({ success: false, message: 'No words found in the dictionary' });
+        if (!wordOfTheDay) {
+            res.status(500).json({ success: false, message: 'No word of the day found', error });
+            return;
         }
+
+        res.status(500).json({
+            success: false, message: 'Internal Server Error', wordOfTheDay: {
+                word: wordOfTheDay.word,
+                definition: wordOfTheDay.definition
+            }
+        });
+
     } catch (error) {
-        console.error('Error fetching word of the day:', error);
+        res.status(500).json({ success: false, message: 'Internal Server Error', error });
+    }
+}
+
+const setWordOfTheDay = async (req, res) => {
+    try {
+        // Find the word with the given ID
+        const { wordId } = req.query;
+        const selectedWord = await Dictionary.findByPk(wordId);
+
+        if (!selectedWord) {
+            console.log('Word not found.');
+            return;
+        }
+
+        // Update the wordOfTheDay field for the selected word to true
+        await Dictionary.update(
+            { wordOfTheDay: true },
+            { where: { id: wordId } }
+        );
+
+        // Reset the wordOfTheDay field for all other words to false
+        await Dictionary.update(
+            { wordOfTheDay: false },
+            { where: { id: { [Op.not]: wordId } } }
+        );
+
+        res.status(200).json({
+            success: true, message: 'Word of the day set successfully'
+        });
+    } catch (error) {
         res.status(500).json({ success: false, message: 'Internal Server Error', error });
     }
 }
 
 
-module.exports = { createWord, fetcWords, searchWords, fetcDefinitionID, WordOfTheDay };
+module.exports = { createWord, fetcWords, searchWords, fetcDefinitionID, wordOfTheDay, setWordOfTheDay };
