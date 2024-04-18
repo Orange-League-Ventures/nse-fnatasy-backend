@@ -19,6 +19,10 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.STRING,
         allowNull: true,
       },
+      set: {
+        type: Sequelize.INTEGER,
+        defaultValue: 0,
+      },
     },
     {
       timestamps: true,
