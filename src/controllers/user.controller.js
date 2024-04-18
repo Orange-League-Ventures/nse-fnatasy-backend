@@ -174,18 +174,18 @@ const updateUser = async (req, res) => {
 
       // Update user information
       if (name) user.name = name;
-      if (email) user.email = email;
+      if (email ) user.email = email;
       if (phone_number) user.phone_number = phone_number;
       if (profile_picture) user.profile_picture = profile_picture;
 
-      if (!isValidEmail(email)) {
+      if ( email && !isValidEmail(email)) {
         return res
           .status(400)
           .json({ success: false, message: "Invalid email format" });
       }
   
       // Check if phone number is valid
-      if (!isValidPhoneNumber(phone_number)) {
+      if (phone_number && !isValidPhoneNumber(phone_number)) {
         return res
           .status(400)
           .json({ success: false, message: "Invalid phone number format" });
