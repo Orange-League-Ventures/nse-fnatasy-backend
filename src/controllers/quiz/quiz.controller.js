@@ -114,13 +114,17 @@ quizController.get = async (req, res) => {
     result: "Empty",
   };
   try {
-    const data = await quiz.findAll({});
-    console.log(data, "datajdfninf");
+    const quizType = req.query.quizType;
+    const data = await quiz.findAll({
+      attributes: ["id", "quizType"],
+      where: { quizType: quizType },
+    });
     if (data) {
       return res.status(200).json({ success: true, quiz: data });
     }
   } catch (error) {
     console.log(error);
+    res.status(500).json(responseData);
   }
 };
 
