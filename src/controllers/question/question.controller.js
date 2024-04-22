@@ -11,7 +11,7 @@ questionController.getQuestionsByQuizId = async (req, res) => {
     success: false,
     result: "Empty",
   };
-  let setIds = 0;
+  // let setIds = 0;
 
   try {
     if (!quizId) {
@@ -23,11 +23,12 @@ questionController.getQuestionsByQuizId = async (req, res) => {
       where: { quiz_id: quizId },
       attributes: ["no_of_attempted"],
     });
-    if (!reportData || reportData.no_of_no_of_attempted == 0) {
-      setIds = 1;
-    } else {
-      setIds = reportData.no_of_no_of_attempted;
-    }
+    // if (!reportData || reportData.no_of_no_of_attempted == 0) {
+    //   setIds = 1;
+    // } else {
+    //   setIds = reportData.no_of_no_of_attempted;
+    // }
+    const setIds = reportData ? reportData.no_of_attempted : 1;
 
     const questionData = await question.findAll({
       where: { quiz_id: quizId, set_id: setIds },
@@ -46,7 +47,7 @@ questionController.getQuestionsByQuizId = async (req, res) => {
       ],
     });
     if (questionData) {
-      return res.status(200).send({ success: true, questions: questionData });
+      return res.status(200).json({ success: true, questions: questionData });
     } else {
       return res.status(400).send({ success: false, msg: "Bad Request" });
     }

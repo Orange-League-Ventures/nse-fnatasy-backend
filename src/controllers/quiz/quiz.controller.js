@@ -37,14 +37,14 @@ quizController.create = async (req, res) => {
               explanation_image2,
               explanation_image3,
               correct_option,
+              set_id,
             } = row;
 
             const transaction = await db.sequelize.transaction();
 
             try {
-              // Create or find the quiz associated with the quiz_type
               let [quizInfo] = await quiz.findOrCreate({
-                where: { quizType: quiz_type },
+                where: { quizType: quiz_type.trim() }, // Trim quiz_type for consistency
                 transaction,
               });
 
@@ -55,6 +55,7 @@ quizController.create = async (req, res) => {
                   question_text: question_text,
                   situation,
                   image_url: question_image,
+                  set_id: set_id,
                 },
                 { transaction }
               );

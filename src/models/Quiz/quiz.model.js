@@ -10,6 +10,7 @@ module.exports = (sequelize, Sequelize) => {
       quizType: {
         type: Sequelize.STRING,
         allowNull: true,
+        unique: true,
       },
     },
     {
