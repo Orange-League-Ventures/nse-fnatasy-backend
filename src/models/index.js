@@ -6,7 +6,6 @@ require("dotenv").config();
 const selectedDbConfig =
   process.env.NODE_ENV === "production" ? dbConfig.prod_db : dbConfig.dev_db;
 
-console.log({ selectedDbConfig });
 const sequelize = new Sequelize(
   selectedDbConfig.DB,
   selectedDbConfig.USER,
