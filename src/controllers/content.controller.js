@@ -1,4 +1,4 @@
-const { Topic, Content } = require('../models');
+const {  Content } = require('../models');
 
 
 const createContent = async (req, res) => {
