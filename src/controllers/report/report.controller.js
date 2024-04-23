@@ -1,5 +1,5 @@
 const db = require("../../models");
-const { report, quiz, user } = db;
+const { report, quiz, User } = db;
 
 const reportController = {};
 
@@ -18,7 +18,7 @@ reportController.updateUserQuizResult = async (req, res) => {
         .res({ success: false, msg: "User Id and Quiz Id are reqired!" });
     }
     // Check if the user exists
-    let userInfo = await user.findOne({ where: { id: userId } });
+    let userInfo = await User.findOne({ where: { id: userId } });
     if (!userInfo) {
       return res
         .status(401)
