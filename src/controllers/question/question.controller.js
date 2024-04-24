@@ -29,7 +29,9 @@ questionController.getQuestionsByQuizId = async (req, res) => {
     //   setIds = reportData.no_of_no_of_attempted;
     // }
     const setIds =
-      reportData.no_of_attempted > 0 ? reportData.no_of_attempted+1 : 1;
+      reportData && reportData.no_of_attempted && reportData.no_of_attempted > 0
+        ? reportData.no_of_attempted + 1
+        : 1;
 
     const questionData = await question.findAll({
       where: { quiz_id: quizId, set_id: setIds },
