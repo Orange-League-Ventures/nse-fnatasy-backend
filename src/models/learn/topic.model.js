@@ -15,13 +15,14 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.STRING,
         allowNull: true,
       },
-      chart_type: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        validate: {
-          isIn: [['candelstick', 'line']], // Allowed chart types
-        },
+      content_value: {
+        type: Sequelize.TEXT,
+        allowNull: false
       },
+      content_image: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      }
     },
     {
       timestamps: true,

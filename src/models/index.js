@@ -26,8 +26,8 @@ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
 db.User = require("./user/user.model")(sequelize, Sequelize);
+db.Lesson = require("./learn/lesson.model")(sequelize, Sequelize);
 db.Topic = require("./learn/topic.model")(sequelize, Sequelize);
-db.Content = require("./learn/content.model")(sequelize, Sequelize);
 db.Dictionary = require("./learn/dictionary.model")(sequelize, Sequelize);
 db.quiz = require("./Quiz/quiz.model")(sequelize, Sequelize);
 db.question = require("./Quiz/question.model")(sequelize, Sequelize);
@@ -35,12 +35,13 @@ db.option = require("./Quiz/options.model")(sequelize, Sequelize);
 db.explaination = require("./Quiz/explaination.model")(sequelize, Sequelize);
 db.report = require("./Report/report.model")(sequelize, Sequelize);
 
-db.Content.belongsTo(db.Topic, {
-  foreignKey: "topic_id",
+// Mapping Topic Table with Lesson Table
+db.Topic.belongsTo(db.Lesson, {
+  foreignKey: "lesson_id",
 });
-db.Topic.hasMany(db.Content, {
-  foreignKey: "topic_id",
-  as: "content",
+db.Lesson.hasMany(db.Topic, {
+  foreignKey: "quiz_id",
+  as: "question",
 });
 
 // Mapping Question Table with Quiz Table
