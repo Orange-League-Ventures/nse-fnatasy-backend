@@ -24,7 +24,7 @@ quizController.create = async (req, res) => {
           try {
             const {
               quiz_type,
-              situation,
+              sitituation,
               question_text,
               option1,
               option2,
@@ -53,7 +53,7 @@ quizController.create = async (req, res) => {
                 {
                   quiz_id: quizInfo.id,
                   question_text: question_text,
-                  situation,
+                  sitituation,
                   image_url: question_image,
                   set_id: set_id,
                 },
