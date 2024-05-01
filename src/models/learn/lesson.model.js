@@ -10,6 +10,7 @@ module.exports = (sequelize, Sequelize) => {
         lesson_name: {
           type: Sequelize.STRING,
           allowNull: false,
+          unique: true,
         },
         lesson_image: {
           type: Sequelize.STRING,

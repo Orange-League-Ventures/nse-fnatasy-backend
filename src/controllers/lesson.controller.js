@@ -32,7 +32,7 @@ const insertDataIntotablesFromCsv = async (req, res) => {
             try {
               let [lessonInfo] = await Lesson.findOrCreate({
                 where: {
-                  lesson_name: lesson_name,
+                  lesson_name: lesson_name.trim(),
                 },
                 transaction,
               });
