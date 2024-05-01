@@ -11,8 +11,8 @@ module.exports = (sequelize, Sequelize) => {
           type: Sequelize.STRING,
           allowNull: false,
         },
-        lessong_image: {
-          type: Sequelize.TEXT,
+        lesson_image: {
+          type: Sequelize.STRING,
           allowNull: true,
         },
       },
