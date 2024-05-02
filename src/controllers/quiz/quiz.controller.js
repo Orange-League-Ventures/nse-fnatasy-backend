@@ -69,6 +69,7 @@ quizController.create = async (req, res) => {
               ];
 
               for (let i = 0; i < options.length; i++) {
+                if (options[i]) {
                 const newOption = await option.create(
                   {
                     question_id: newQuestion.id,
@@ -85,6 +86,7 @@ quizController.create = async (req, res) => {
                   },
                   { transaction }
                 );
+                }
               }
               await transaction.commit();
             } catch (error) {
