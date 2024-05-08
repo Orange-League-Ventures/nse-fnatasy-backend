@@ -131,4 +131,23 @@ quizController.get = async (req, res) => {
   }
 };
 
+quizController.getAllIds = async (req, res) => {
+  const responseData = {
+    msg: "Error in Adding Quizes ",
+    success: false,
+    result: "Empty",
+  };
+  try {
+    const data = await quiz.findAll({
+      attributes: ["id"],
+    });
+    if (data) {
+      return res.status(200).json({ success: true, quiz: data });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json(responseData);
+  }
+};
+
 module.exports = quizController;
