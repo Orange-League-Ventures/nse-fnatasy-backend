@@ -34,6 +34,12 @@ db.question = require("./Quiz/question.model")(sequelize, Sequelize);
 db.option = require("./Quiz/options.model")(sequelize, Sequelize);
 db.explaination = require("./Quiz/explaination.model")(sequelize, Sequelize);
 db.report = require("./Report/report.model")(sequelize, Sequelize);
+db.Shares=require("./Stocks/shares.model")(sequelize,Sequelize);
+db.Amount=require("./Stocks/amount.model")(sequelize,Sequelize);
+db.Watchllist=require("./Stocks/wachlist.model")(sequelize,Sequelize);
+db.Transaction=require("./Stocks/transaction.model")(sequelize,Sequelize);
+db.Portfolio=require("./Stocks/portfolio.model")(sequelize,Sequelize);
+db.Stock=require("./Stocks/stock.model")(sequelize,Sequelize);
 
 // Mapping Topic Table with Lesson Table
 db.Topic.belongsTo(db.Lesson, {
@@ -76,6 +82,55 @@ db.report.belongsTo(db.User, { foreignKey: "user_id" });
 db.User.hasMany(db.report, {
   foreignKey: "user_id",
   as: "user_report",
+});
+
+//Mapping Report with user
+db.Shares.belongsTo(db.User, { foreignKey: "user_id" });
+db.User.hasMany(db.Shares, {
+  foreignKey: "user_id",
+  as: "stock_report",
+});
+
+//Mapping Report with user
+db.Watchllist.belongsTo(db.User, { foreignKey: "user_id" });
+db.User.hasMany(db.Watchllist, {
+  foreignKey: "user_id",
+  as: "watchlist",
+});
+
+//Mapping Report with user
+db.Transaction.belongsTo(db.User, { foreignKey: "user_id" });
+db.User.hasMany(db.Transaction, {
+  foreignKey: "user_id",
+  as: "Transaction",
+});
+
+//Mapping Report with user
+db.Transaction.belongsTo(db.Stock, { foreignKey: "stock_id" });
+db.Stock.hasMany(db.Transaction, {
+  foreignKey: "stock_id",
+  as: "Transaction",
+});
+
+//Mapping Report with user
+db.Portfolio.belongsTo(db.User, { foreignKey: "user_id" });
+db.User.hasMany(db.Portfolio, {
+  foreignKey: "user_id",
+  as: "Portfolio",
+});
+
+//Mapping Report with user
+db.Portfolio.belongsTo(db.Stock, { foreignKey: "stock_id" });
+db.Stock.hasMany(db.Portfolio, {
+  foreignKey: "stock_id",
+  as: "Portfolio",
+});
+
+//Mapping Report with user
+db.Amount.belongsTo(db.User, { foreignKey: "user_id" });
+db.User.hasMany(db.Amount, {
+  foreignKey: "user_id",
+  as: "amount",
 });
 
 // Mapping Report with quiz
