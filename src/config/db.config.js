@@ -3,8 +3,9 @@ module.exports = {
     HOST: process.env.DB_HOST,
     USER: process.env.DB_USERNAME,
     PASSWORD: process.env.DB_PASSWORD,
-    DB: process.env.SERVICENAME,
+    // DB: process.env.SERVICENAME,
     dialect: "oracle",
+    // port: 18485,
     port: 1521,
     pool: {
       max: 5,
@@ -20,8 +21,9 @@ module.exports = {
     HOST: process.env.PROD_DB_HOST,
     USER: process.env.PROD_DB_USERNAME,
     PASSWORD: process.env.PROD_DB_PASSWORD,
-    DB: process.env.SERVICENAME,
+    // DB: process.env.SERVICENAME,
     dialect: "oracle",
+    // port: 18485,
     port: 1521,
     pool: {
       max: 5,

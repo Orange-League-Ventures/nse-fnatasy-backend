@@ -33,6 +33,7 @@ router.use("/watchlist", watchlist);
 router.post('/buy', transactionController.buyStock);
 router.post('/sell', transactionController.sellStock);
 router.get('/portfolio', portfolioController.getUserPortfolio);
+router.get('/portfolio/stock-data', portfolioController.getStockDetails);
 router.get('/transactions', transactionController.getUserTransactions);
 
 
