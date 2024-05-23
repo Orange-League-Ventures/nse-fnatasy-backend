@@ -46,6 +46,11 @@ exports.getStockDetails = async (req, res) => {
         });
       } else {
         console.log('No portfolio found for the given stock ID and user ID.');
+        res.status(401).json({
+          success: false,
+          message: "No portfolio found for the given stock ID and user ID",
+          data: stockDetails,
+        });
       }
     } else {
       console.log('No stock found with the given symbol.');

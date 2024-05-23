@@ -1,5 +1,5 @@
 const bcrypt = require("bcrypt");
-const { User } = require("../models");
+const { User, Amount } = require("../models");
 const jwt = require("jsonwebtoken");
 const { Sequelize, Op } = require("sequelize");
  const { isValidEmail, isValidPhoneNumber, validatePassword } =require("../utils/validationUtils"); 
@@ -68,6 +68,15 @@ const signupUser = async (req, res) => {
       password: hashedPassword,
       phone_number,
       profile_picture,
+    });
+
+    // Define the joining bonus amount
+    const joiningBonus = 5000; // Adjust the bonus amount as needed
+
+    // Create an entry in the Amount table for the joining bonus
+    await Amount.create({
+      total_amount: joiningBonus,
+      user_id: newUser.id,
     });
 
     // Generate JWT token

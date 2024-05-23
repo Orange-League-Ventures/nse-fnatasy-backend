@@ -1,7 +1,13 @@
 const { Transaction, Portfolio, Stock, User } = require("../../models");
 
 exports.buyStock = async (req, res) => {
-  const { userId, stock_symbol, quantity ,stock_name,current_price} = req.body;
+  const {
+    userId,
+    stock_symbol,
+    quantity,
+    stock_name,
+    current_price,
+  } = req.body;
 
   try {
     const user = await User.findByPk(userId);
@@ -10,6 +16,15 @@ exports.buyStock = async (req, res) => {
     let stock = await Stock.findOne({ where: { stock_symbol } });
     if (!stock) {
       stock = await Stock.create({ stock_symbol, stock_name, current_price });
+    } else {
+      // await Stock.update({
+      //   where: { stock_symbol },
+      //   current_price: current_price,
+      // });
+      await Stock.update(
+        { current_price: current_price },
+        { where: { stock_symbol: stock_symbol } }
+      );
     }
     // if (!stock) return res.status(404).json({ error: "Stock not found" });
 
@@ -38,7 +53,9 @@ exports.buyStock = async (req, res) => {
     } else {
       const newQuantity = parseInt(portfolio.quantity) + parseInt(quantity);
       portfolio.averagePrice =
-        (parseInt(portfolio.averagePrice) * parseInt(portfolio.quantity) + parseInt(totalCost)) / newQuantity;
+        (parseInt(portfolio.averagePrice) * parseInt(portfolio.quantity) +
+          parseInt(totalCost)) /
+        newQuantity;
       portfolio.quantity = newQuantity;
       await portfolio.save();
     }
@@ -57,7 +74,7 @@ exports.sellStock = async (req, res) => {
     const user = await User.findByPk(userId);
     if (!user) return res.status(404).json({ error: "User not found" });
 
-    const stock = await Stock.findOne({ where: {  stock_symbol } });
+    const stock = await Stock.findOne({ where: { stock_symbol } });
     if (!stock) return res.status(404).json({ error: "Stock not found" });
 
     const portfolio = await Portfolio.findOne({
@@ -97,8 +114,14 @@ exports.getUserTransactions = async (req, res) => {
 
   try {
     const transactions = await Transaction.findAll({
-      where: { user_id:userId },
-      include: [{ model: Stock, as: "Stock", attributes: ["stock_symbol", "stock_name"] }],
+      where: { user_id: userId },
+      include: [
+        {
+          model: Stock,
+          as: "Stock",
+          attributes: ["stock_symbol", "stock_name"],
+        },
+      ],
     });
     res.status(200).json(transactions);
   } catch (error) {
@@ -107,6 +130,4 @@ exports.getUserTransactions = async (req, res) => {
   }
 };
 
-exports.getTopPerformers=async(req,res)=>{
-  
-}
+exports.getTopPerformers = async (req, res) => {};
