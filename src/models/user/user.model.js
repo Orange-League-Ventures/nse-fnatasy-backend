@@ -29,7 +29,7 @@ module.exports = (sequelize, Sequelize) => {
       },
       phone_number: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
         unique: true,
       },
     },
