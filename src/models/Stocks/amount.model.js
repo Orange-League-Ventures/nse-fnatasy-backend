@@ -8,7 +8,7 @@ module.exports = (sequelize, Sequelize) => {
           primaryKey: true,
         },
         total_amount: {
-          type: Sequelize.INTEGER,
+          type: Sequelize.FLOAT,
           allowNull: false,
         },
       },
